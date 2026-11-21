@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-slate-50 font-sans text-slate-800 antialiased;
+  }
+
+  ::selection {
+    @apply bg-accent-600 text-white;
+  }
+}
+
+@layer components {
+  /* Reusable page container — full width, edge to edge, with a slim
+     horizontal inset so content never touches the viewport edges */
+  .container-x {
+    @apply mx-auto w-full px-4 sm:px-6;
+  }
+
+  /* Small overline label used above section titles */
+  .eyebrow-pill {
+    @apply inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em];
+  }
+
+  /* Hero image — a genuine RGBA PNG (checkerboard background removed), so the
+     subject sits directly on the hero background. The container renders fully
+     transparent with no border, outline, or box-shadow. The radial mask only
+     feathers the outermost edge as a final safeguard against residual
+     artifacts; no blend mode is needed since the PNG's own alpha channel does
+     the compositing. */
+  .hero-img {
+    @apply relative h-full w-full object-cover object-center;
+    background: transparent;
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 60%, transparent 96%);
+    mask-image: radial-gradient(ellipse at center, #000 60%, transparent 96%);
+  }
+
+  /* Brand wordmark shimmer — each word keeps its own color ("Access" navy,
+     "Center" red) supplied via currentColor. A white band in the gradient is
+     clipped to the glyphs and continuously sweeps across the letters, reading
+     as a bright passing shine while the original colors stay visible. */
+  .shimmer-word {
+    background-image: linear-gradient(
+      110deg,
+      currentColor 35%,
+      rgba(255, 255, 255, 0.8) 50%,
+      currentColor 65%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer-sweep 2.5s linear infinite;
+  }
+
+  @keyframes shimmer-sweep {
+    from {
+      background-position: 200% 0;
+    }
+    to {
+      background-position: -200% 0;
+    }
+  }
+
+  /* Announcement ticker — direction-aware infinite marquee. The track holds
+     six repeated copies of the message; each loop starts half a track on the
+     incoming side and ends at its natural position, so the bar remains covered
+     on narrow screens. The track's own dir attribute toggles both the flex
+     layout and the scroll direction, independent of the document direction. */
+  .ticker-track[dir='ltr'] {
+    animation: ticker-scroll-rtl 28s linear infinite;
+  }
+
+  .ticker-track[dir='rtl'] {
+    animation: ticker-scroll-ltr 28s linear infinite;
+  }
+
+  /* Text streams right → left (Arabic). */
+  @keyframes ticker-scroll-rtl {
+    from {
+      transform: translateX(50%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  /* Text streams left → right (English / French). */
+  @keyframes ticker-scroll-ltr {
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  /* Button system — brand navy CTA */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-accent-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-accent-600/25 transition-all duration-200 hover:-translate-y-0.5 hover:bg-accent-700 hover:shadow-xl hover:shadow-accent-600/30 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 active:translate-y-0;
+  }
+
+  .btn-dark {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-navy-900 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-navy-900/20 transition-all duration-200 hover:-translate-y-0.5 hover:bg-navy-800 focus:outline-none focus:ring-2 focus:ring-navy-900 focus:ring-offset-2 active:translate-y-0;
+  }
+
+  /* Solid bright-red CTA — logo red #E20F1E */
+  .btn-red {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-[#E20F1E] px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-[#E20F1E]/25 transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#C50D1B] hover:shadow-xl hover:shadow-[#E20F1E]/30 focus:outline-none focus:ring-2 focus:ring-[#E20F1E] focus:ring-offset-2 active:translate-y-0;
+  }
+
+  /* Outline button for light backgrounds */
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-navy-900/15 bg-white px-5 py-3 text-sm font-semibold text-navy-900 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-600 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 active:translate-y-0;
+  }
+
+  .btn-outline-light {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-white/30 bg-white/5 px-5 py-3 text-sm font-semibold text-white backdrop-blur transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50 active:translate-y-0;
+  }
+
+  .btn-whatsapp {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-green-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-green-500/25 transition-all duration-200 hover:-translate-y-0.5 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 active:translate-y-0;
+  }
+
+  /* Form input */
+  .input-field {
+    @apply w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-800 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/30;
+  }
+
+  /* Form label */
+  .input-label {
+    @apply mb-1.5 block text-sm font-semibold text-navy-900;
+  }
+}
